@@ -51,6 +51,29 @@
                 }
             });
         }
+
+        function saveProgress() {
+            let checkboxes = document.querySelectorAll("input[type='checkbox']");
+            let progress = {};
+            checkboxes.forEach((checkbox, index) => {
+                progress[index] = checkbox.checked;
+            });
+            localStorage.setItem("leetcodeProgress", JSON.stringify(progress));
+        }
+
+        function loadProgress() {
+            let savedProgress = localStorage.getItem("leetcodeProgress");
+            if (savedProgress) {
+                let progress = JSON.parse(savedProgress);
+                let checkboxes = document.querySelectorAll("input[type='checkbox']");
+                checkboxes.forEach((checkbox, index) => {
+                    checkbox.checked = progress[index] || false;
+                    checkbox.addEventListener("change", saveProgress);
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadProgress);
     </script>
 </head>
 <body>
@@ -136,7 +159,6 @@
                     "https://leetcode.com/problems/base-7/"
                 ]
             };
-            
             Object.keys(problems).forEach(category => {
                 problems[category].forEach((link, index) => {
                     document.write(`<tr class='problem-row ${category}'><td>${index + 1}</td><td>${link.split('/').slice(-2, -1)}</td><td><a href='${link}' target='_blank'>🔗 Link</a></td><td><input type='checkbox'></td></tr>`);
