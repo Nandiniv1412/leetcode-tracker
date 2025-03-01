@@ -34,9 +34,32 @@
             margin-bottom: 20px;
             font-size: 16px;
             color: black;
+            background-color: #44475a;
+            color: white;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
         }
         .hidden {
             display: none;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .filter-container label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .filter-container select {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #44475a;
+            color: white;
+            border: 1px solid #6272a4;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .filter-container select:hover {
+            background-color: #6272a4;
         }
     </style>
     <script>
@@ -63,14 +86,12 @@
 
         function loadProgress() {
             let savedProgress = localStorage.getItem("leetcodeProgress");
-            if (savedProgress) {
-                let progress = JSON.parse(savedProgress);
-                let checkboxes = document.querySelectorAll("input[type='checkbox']");
-                checkboxes.forEach((checkbox, index) => {
-                    checkbox.checked = progress[index] || false;
-                    checkbox.addEventListener("change", saveProgress);
-                });
-            }
+            let checkboxes = document.querySelectorAll("input[type='checkbox']");
+            let progress = savedProgress ? JSON.parse(savedProgress) : {};
+            checkboxes.forEach((checkbox, index) => {
+                checkbox.checked = progress[index] || false;
+                checkbox.addEventListener("change", saveProgress);
+            });
         }
 
         document.addEventListener("DOMContentLoaded", loadProgress);
@@ -78,12 +99,14 @@
 </head>
 <body>
     <h1>✅ LeetCode Problem Tracker</h1>
-    <label for="categorySelect">Select Category:</label>
-    <select id="categorySelect" onchange="filterTable()">
-        <option value="All">All Problems</option>
-        <option value="Array">Array</option>
-        <option value="Math">Math</option>
-    </select>
+    <div class="filter-container">
+        <label for="categorySelect">Select Category:</label>
+        <select id="categorySelect" onchange="filterTable()">
+            <option value="All">All Problems</option>
+            <option value="Array">Array</option>
+            <option value="Math">Math</option>
+        </select>
+    </div>
     
     <table>
         <tr>
